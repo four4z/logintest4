@@ -19,7 +19,16 @@ app.use(cors({
     credentials: true,
     origin: [`http://localhost:3000`]
 }))
-app.use(bodyParser())
+
+
+const connectDB = async () => {
+    try {
+        await client.connect();
+        console.log("Connected to DB");
+    } catch (err) {
+        console.log("Error", err);
+    }
+}
 
 
 
@@ -33,13 +42,10 @@ app.get('/', (req,res)=>{
 // Sign Up
 app.post('/api/signup', async (req,res) => {
     try {
-        const{
-            password
-        }=req.body
-        res.send(password)
-    }
-    catch (error) {
-        console.log('Error', error);
+        const { password } = req.body;
+        res.status(200).send({ password});
+    } catch (error) {
+        console.log(error);
     }
 })
 
@@ -130,13 +136,5 @@ app.get('/api/getAccount/:id', async (req, res) => {
 })
 
 app.listen(PORT, async () => {
-    console.log(`Server started at port ${PORT}`)
+    console.log(`Server started at port at http://localhost:${PORT}`)
 })
-const connectDB = async () => {
-    try {
-        await client.connect();
-        console.log("Connected to DB");
-    } catch (err) {
-        console.log("Error", err);
-    }
-}
